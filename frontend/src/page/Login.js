@@ -3,10 +3,11 @@ import loginSignupImage from "../assets/login-animation.gif";
 import { BiShow, BiHide } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { BsEmojiSmileUpsideDown } from "react-icons/bs";
-// import {toast} from "react-hot-toast"
+import {toast} from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
-// import { loginRedux } from "../redux/userSlice";
+import { useDispatch } from "react-redux";
+import {  useSelector } from "react-redux";
+import { loginRedux } from "../redux/userSlice";
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -15,9 +16,20 @@ const Login = () => {
         
         email: "",
         password: "",
-    
-        image : ""
       });
+
+      const navigate=useNavigate()
+
+      const userData=useSelector(state => state)
+      console.log(userData.user)
+      
+      const dispatch =useDispatch()
+
+
+
+
+
+
 
     const handleShowPassword = () => {
         setShowPassword((preve) => !preve);
@@ -36,7 +48,29 @@ const Login = () => {
         e.preventDefault();
         const {  email, password } = data;
         if ( email && password ) 
-            alert("successful")
+            {
+              const fetchData=await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/login`,{
+                method:"POST",
+                headers:{
+                  "content-type":"application/json"
+                },
+                body : JSON.stringify(data)
+    
+              })
+              const dataRes=await fetchData.json()
+
+              console.log(dataRes)
+              toast(userData.user.firstName+dataRes.message)
+
+              if(data.alert)
+              {
+                  dispatch(loginRedux(dataRes))
+                  setTimeout(()=>{
+                    navigate("/")
+                  },1000)
+              }
+              
+            }
         else {
           alert("Please Enter required fields");
         }
