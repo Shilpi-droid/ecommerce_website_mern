@@ -47,8 +47,8 @@ const Header = () => {
                 </div>
                 
                 
-                <div className='text-slate-600' onClick={handleShowMenu}> 
-                <div className='text-3xl text-slate-600 cursor-pointer w-10 h-10 rounded-full overflow-hidden  drop-shadow '>
+                <div className='text-slate-600 flex items-center justify-center' onClick={handleShowMenu}> 
+                <div className='text-3xl cursor-pointer w-10 h-10 rounded-full overflow-hidden  drop-shadow-md '>
                 {userData.image ? (
                 <img src={userData.image} className="h-full w-full" />
               ) : (
@@ -59,7 +59,11 @@ const Header = () => {
                 </div>
                 {
                     showMenu && (<div className='absolute right-2 top-12 bg-white py-2 px-2 shadow drop-shadow-md flex flex-col'>
-                    <Link to='newproduct' className='whitespace-nowrap'>New Product</Link>
+
+                        {
+                            userData.email === process.env.REACT_APP_ADMIN_EMAIL && <Link to='newproduct' className='whitespace-nowrap'>New Product</Link>
+                        }
+                    
                     
                     {userData.image ? (
                   <p
