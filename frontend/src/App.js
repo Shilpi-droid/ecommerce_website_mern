@@ -6,6 +6,16 @@ import toast,{ Toaster } from "react-hot-toast";
 
 
 function App() {
+  const dispatch = useDispatch()
+  const productData = useSelector((state)=>state.product)
+ 
+  useEffect(()=>{
+    (async()=>{
+      const res = await fetch(`${process.env.REACT_APP_SERVER_DOMIN}/product`)
+      const resData = await res.json()
+      dispatch(setDataProduct(resData))
+    })()
+  },[])
   return (   
     <>
       <Toaster/>
